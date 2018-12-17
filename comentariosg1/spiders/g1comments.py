@@ -66,7 +66,7 @@ class G1commentsSpider(scrapy.Spider):
             for reply in comment['replies']:
                 yield self.extract_comment(reply, aggregator)
             yield self.extract_comment(comment, aggregator)
-        next_page = (data['fim'] / data['itensPorPagina']) + 1
+        next_page = int((data['fim'] / data['itensPorPagina']) + 1)
         yield response.follow(re.sub(r'\d+.json', f'{next_page}.json', response.url), callback=self.parse_comments)
 
     def extract_comment(self, comment, aggregator):
