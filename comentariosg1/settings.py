@@ -11,3 +11,5 @@ USER_AGENT = generate_user_agent(device_type=['desktop'])
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
+
+FEED_EXPORT_ENCODING = 'utf-8'
