@@ -14,6 +14,18 @@ class G1commentsSpider(scrapy.Spider):
     votes_count_url = 'https://interatividade.globo.com/notas/agregador/{id}/resultado-resumido.jsonp'
     max_pages = 10
 
+    def start_requests(self):
+        if hasattr(self, 'max_pages'):
+            self.max_pages = int(self.max_pages)
+
+        if hasattr(self, 'category_url'):
+            yield scrapy.Request(self.category_url, callback=self.parse_category)
+        elif hasattr(self, 'news_url'):
+            yield scrapy.Request(self.news_url, callback=self.parse_news)
+        else:
+            for url in self.start_urls:
+                yield scrapy.Request(url)
+
     def parse(self, response):
         for category in response.xpath('//li[@id="menu-1-editorias"]/ul/li/a[1]/@href'):
             yield response.follow(category, callback=self.parse_category)
